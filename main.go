@@ -1,29 +1,20 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"os"
-	"strconv"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api"
-	"github.com/joho/godotenv"
 )
 
 func main() {
 
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
-	TelegramBotID := os.Getenv("BOT-ID")
-	ChatID, err := strconv.ParseInt(os.Getenv("CHAT-ID"), 10, 64)
+	TelegramBotID := flag.String("botid", "", "The Bot Id")
+	ChatID := flag.Int64("chatid", -1, "The Chat Id")
 
-	if err != nil {
-		log.Fatal("Invalid Chat ID provided")
-	}
-
-	bot, err := tgbotapi.NewBotAPI(TelegramBotID)
+	bot, err := tgbotapi.NewBotAPI(*TelegramBotID)
 
 	if err != nil {
 		log.Panic(err)
@@ -33,7 +24,7 @@ func main() {
 
 	if EventType == "Test" {
 		msg := tgbotapi.NewMessage(
-			ChatID,
+			*ChatID,
 			"Test Successful!",
 		)
 		bot.Send(msg)
@@ -47,7 +38,7 @@ func main() {
 	Quality := os.Getenv("sonarr_episodefile_quality")
 
 	msg := tgbotapi.NewMessage(
-		ChatID,
+		*ChatID,
 		fmt.Sprintf(
 			"Episode Downloaded\n %s - S%sE%s (%s) - https://www.imdb.com/title/%s/",
 			SeriesTitle,
