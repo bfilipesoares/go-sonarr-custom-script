@@ -1,0 +1,1 @@
+# go-sonarr-custom-script
