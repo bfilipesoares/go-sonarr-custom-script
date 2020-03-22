@@ -13,6 +13,7 @@ func main() {
 
 	TelegramBotID := flag.String("botid", "", "The Bot Id")
 	ChatID := flag.Int64("chatid", -1, "The Chat Id")
+	flag.Parse()
 
 	bot, err := tgbotapi.NewBotAPI(*TelegramBotID)
 
